@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './App.css'
 
+import { Form } from './Form'
+
 function Main() {
   const [address, setAddress] = useState('')
   const navigate = useNavigate()
@@ -30,6 +32,7 @@ function Main() {
       <button onClick={connect} type="button">
         Connect
       </button>
+      {address && <Form address={address} />}
     </div>
   )
 }
