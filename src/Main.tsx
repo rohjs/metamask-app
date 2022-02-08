@@ -5,6 +5,7 @@ import './App.css'
 
 import { Effects } from './Effects'
 import { Form } from './Form'
+import { Wallets } from './Wallets'
 
 function Main() {
   const [address, setAddress] = useState(store.get(`meta.account`) || '')
@@ -28,16 +29,25 @@ function Main() {
   }, [navigate])
 
   return (
-    <div className="Main">
-      Main
-      <dl>
-        <dt>Address</dt>
-        <dd>{address || '-'}</dd>
-      </dl>
-      <button onClick={connect} disabled={!!address} type="button">
-        Connect
-      </button>
-      {address && <Form address={address} />}
+    <div className="app">
+      <div className="content">
+        <dl>
+          <dt>Address</dt>
+          <dd>{address || '-'}</dd>
+        </dl>
+
+        {address ? (
+          <>
+            <Wallets />
+            <hr />
+            <Form address={address} />
+          </>
+        ) : (
+          <button onClick={connect} disabled={!!address} type="button">
+            Connect
+          </button>
+        )}
+      </div>
       {window.ethereum && <Effects updateAddress={updateAddress} />}
     </div>
   )
