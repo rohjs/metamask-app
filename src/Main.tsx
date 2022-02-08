@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import store from 'store'
@@ -18,9 +19,8 @@ function Main() {
   }
 
   const connect = async () => {
-    const accounts = await window.ethereum.request({
-      method: 'eth_requestAccounts',
-    })
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')
+    const accounts = await provider.send('eth_requestAccounts', [])
     if (accounts && accounts[0]) updateAddress(accounts[0])
   }
 
@@ -38,7 +38,7 @@ function Main() {
 
         {address ? (
           <>
-            <Wallets />
+            <Wallets address={address} />
             <hr />
             <Form address={address} />
           </>

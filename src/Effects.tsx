@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { FC, useEffect } from 'react'
 
 type EffectsProps = {
@@ -6,9 +7,13 @@ type EffectsProps = {
 
 export const Effects: FC<EffectsProps> = ({ updateAddress }) => {
   const { ethereum } = window
+  const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')
 
-  const handleChainChanged = () => {
-    window.location.reload()
+  const handleNetworkChange = (_: string, oldNetwork: string) => {
+    // NOTE: window.ethereum.on('chainChanged')가 더 빠른듯
+    if (oldNetwork) {
+      window.location.reload()
+    }
   }
 
   const handleAccountsChanged = (newAccounts: string[]) => {
@@ -18,11 +23,11 @@ export const Effects: FC<EffectsProps> = ({ updateAddress }) => {
 
   useEffect(() => {
     ethereum.on('accountsChanged', handleAccountsChanged)
-    ethereum.on('chainChanged', handleChainChanged)
+    provider.on('network', handleNetworkChange)
 
     return () => {
       ethereum.removeListener('accountsChanged', handleAccountsChanged)
-      ethereum.removeListener('chainChanged', handleChainChanged)
+      provider.off('network', handleNetworkChange)
     }
   }, [])
 
