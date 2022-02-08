@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Web3 from 'web3'
 import { ethers } from 'ethers'
 
@@ -13,7 +13,10 @@ export const Wallets = ({ address }: WalletsProps) => {
 
   const provider = new ethers.providers.Web3Provider(window.ethereum)
   const web3 = new Web3(Web3.givenProvider)
-  const contract = new web3.eth.Contract(ABI, HOTBODY_TOKEN_ADDRESS)
+  const tokenInst = new web3.eth.Contract(ABI, HOTBODY_TOKEN_ADDRESS)
+
+  // TODO: 유저가 hotbody token을 임포트 했는지 안했는지 여부를 어떻게 파악할까, 파악할 수 있을까..?
+  console.log(tokenInst.defaultAccount)
 
   const getWallets = async () => {
     const ethBalance = await provider.getBalance(address)
@@ -22,8 +25,15 @@ export const Wallets = ({ address }: WalletsProps) => {
     let formattedHotbody = ''
 
     try {
-      const hotbodyBalance = await contract.methods.balanceOf(address).call()
-      formattedHotbody = web3.utils.fromWei(hotbodyBalance, 'mwei')
+      const hotbodyBalance = await tokenInst.methods.balanceOf(address).call()
+      const hotbodyDecimals = Number(await tokenInst.methods.decimals().call())
+      // const tokenName = await tokenInst.methods.name().call()
+      // const tokenSymbol = await tokenInst.methods.symbol().call()
+
+      formattedHotbody = web3.utils.fromWei(
+        hotbodyBalance,
+        hotbodyDecimals === 6 ? 'mwei' : undefined
+      )
     } catch (err) {
       formattedHotbody = 'Not Supported'
     }
@@ -34,18 +44,34 @@ export const Wallets = ({ address }: WalletsProps) => {
     ])
   }
 
+  const importToken = () => {}
+
   useEffect(() => {
     getWallets()
   }, [address])
 
   return (
-    <ul className="walletList">
-      {wallets.map(({ name, balance }) => (
-        <li key={`wallet-${name}`}>
-          <span>{name.toUpperCase()}</span>
-          <strong>{balance}</strong>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <ul className="walletList">
+        {wallets.map(({ name, balance }) => {
+          if (balance) {
+            return (
+              <li key={`wallet-${name}`}>
+                <span>{name.toUpperCase()}</span>
+                <strong>{balance}</strong>
+              </li>
+            )
+          } else {
+            return null
+          }
+        })}
+      </ul>
+
+      {!tokenInst.defaultAccount && (
+        <button onClick={importToken} type="button">
+          Add Hotbody to your wallet
+        </button>
+      )}
+    </div>
   )
 }
