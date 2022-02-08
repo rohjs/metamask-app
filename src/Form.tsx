@@ -1,5 +1,6 @@
 import { FormEvent } from 'react'
 import { FixedNumber } from 'ethers'
+import { isAddress } from 'ethers/lib/utils'
 import './App.css'
 
 type FormProps = {
@@ -14,6 +15,11 @@ export const Form = ({ address }: FormProps) => {
       e.currentTarget.amount.value
     ).toHexString()
     const toAddress = e.currentTarget.toAddress.value
+
+    if (!isAddress(toAddress)) {
+      alert('Invalid Address!')
+      return
+    }
 
     const params = {
       from: address,
