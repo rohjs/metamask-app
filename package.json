@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/store": "^2.0.2",
     "assert": "^2.0.0",
