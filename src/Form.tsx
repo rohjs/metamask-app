@@ -13,7 +13,6 @@ export const Form = ({ address }: FormProps) => {
     const amount = FixedNumber.fromString(
       e.currentTarget.amount.value
     ).toHexString()
-
     const toAddress = e.currentTarget.toAddress.value
 
     const params = {
@@ -39,7 +38,7 @@ export const Form = ({ address }: FormProps) => {
       />
       <input
         type="text"
-        pattern="[+-]?([0-9]*[.])?[0-9]+"
+        pattern="[-+]?[0-9]*[.,]?[0-9]+"
         name="amount"
         placeholder="Amount"
       />
