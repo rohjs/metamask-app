@@ -1,4 +1,5 @@
 export enum ModalType {
+  Error = 'Error',
   ImportTokenSuccess = 'ImportTokenSuccess',
   ImportTokenFail = 'ImportTokenFail',
   TransactionCanceled = 'TransactionCanceled',
