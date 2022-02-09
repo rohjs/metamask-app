@@ -81,16 +81,20 @@ export const Form: FC<FormProps> = ({ address }) => {
     e.preventDefault()
 
     const tokenType = e.currentTarget.tokenType.value
-    const amount = FixedNumber.fromString(
-      e.currentTarget.amount.value
-    ).toHexString()
     const receiver = e.currentTarget.toAddress.value
+    const rawAmount = e.currentTarget.amount.value
 
     if (!isAddress(receiver)) {
       alert('Invalid Address!')
       return
     }
 
+    if (!rawAmount) {
+      alert('Invalid Amount')
+      return
+    }
+
+    const amount = FixedNumber.fromString(rawAmount).toHexString()
     const params = { receiver, amount }
 
     if (tokenType === 'ETH') transferEth(params)

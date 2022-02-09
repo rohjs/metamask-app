@@ -50,20 +50,24 @@ export const Wallets: FC<WalletsProps> = ({ address }) => {
 
   return (
     <div>
-      <ul className="walletList">
-        {wallets.map(({ name, balance }) => {
-          if (balance) {
-            return (
-              <li key={`wallet-${name}`}>
-                <span>{name.toUpperCase()}</span>
-                <strong>{balance}</strong>
-              </li>
-            )
-          } else {
-            return null
-          }
-        })}
-      </ul>
+      {wallets.length ? (
+        <ul className="walletList">
+          {wallets.map(({ name, balance }) => {
+            if (balance) {
+              return (
+                <li key={`wallet-${name}`}>
+                  <span>{name.toUpperCase()}</span>
+                  <strong>{balance}</strong>
+                </li>
+              )
+            } else {
+              return null
+            }
+          })}
+        </ul>
+      ) : (
+        <div className="loading">Loading...</div>
+      )}
 
       {isGoerli && <ImportToken />}
     </div>
