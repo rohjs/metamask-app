@@ -25,6 +25,7 @@
 .content {
   width: 100%;
   max-width: 540px;
+  text-align: center;
 }
 
 .address {
@@ -125,6 +126,10 @@ select:active {
   border-color: #acb4be;
 }
 
+form {
+  text-align: left;
+}
+
 form button {
   width: 100%;
   margin-top: 20px;
@@ -145,6 +150,8 @@ hr {
 }
 
 .walletList li {
+  display: flex;
+  justify-content: space-between;
   padding: 16px 24px;
   margin-bottom: 10px;
   font-size: 20px;
@@ -157,7 +164,15 @@ hr {
 }
 
 .walletList li span {
+  flex-shrink: 0;
   margin-right: 1em;
+  white-space: nowrap;
+}
+
+.walletList li strong {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .walletGuide {
@@ -169,6 +184,7 @@ hr {
 .walletGuide h3 {
   flex-shrink: 0;
   margin-right: 20px;
+  text-align: left;
 }
 
 .loading {
