@@ -2,11 +2,16 @@ import { FormEvent } from 'react'
 import { FixedNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 
+import { useModal } from '../hooks'
+import { ModalType } from '../types/modal.d'
+
 type FormProps = {
   address: string
 }
 
 export const Form = ({ address }: FormProps) => {
+  const { addModal } = useModal()
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -26,11 +31,26 @@ export const Form = ({ address }: FormProps) => {
       value: amount,
     }
 
-    const data = await window.ethereum.request({
-      method: 'eth_sendTransaction',
-      params: [params],
-    })
-    console.log(data)
+    try {
+      const txid = await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [params],
+      })
+
+      addModal({
+        type: ModalType.TransactionSubmitted,
+        props: { txid },
+      })
+    } catch (error: any) {
+      switch (error.code) {
+        case 4001:
+          addModal({ type: ModalType.TransactionCanceled })
+          break
+        default:
+          addModal({ type: ModalType.Error })
+          break
+      }
+    }
   }
 
   return (

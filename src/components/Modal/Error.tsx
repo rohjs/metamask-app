@@ -1,15 +1,15 @@
 import { useModal } from '../../hooks'
 import { ModalType } from '../../types/modal.d'
 
-export const TransactionCanceledModal = () => {
+export const ErrorModal = () => {
   const { removeModal } = useModal()
   const closeModal = () => {
-    removeModal(ModalType.TransactionCanceled)
+    removeModal(ModalType.Error)
   }
 
   return (
     <aside>
-      <h1>🥲 You rejected the transaction</h1>
+      <h1>😱 Oops! Something went wrong</h1>
       <button onClick={closeModal} type="button">
         Okay
       </button>
