@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react'
+import store from 'store'
 
 type EffectsProps = {
   updateAddress: (newAcccount: string) => void
@@ -13,7 +14,11 @@ export const Effects: FC<EffectsProps> = ({ updateAddress }) => {
 
   const handleAccountsChanged = (newAccounts: string[]) => {
     const newAccount = newAccounts[0]
-    updateAddress(newAccount)
+    if (newAccount) updateAddress(newAccount)
+    else {
+      store.remove('meta.account')
+      window.location.reload()
+    }
   }
 
   useEffect(() => {
