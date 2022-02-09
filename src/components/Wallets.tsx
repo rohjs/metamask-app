@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 
 import { ABI, HOTBODY_TOKEN_ADDRESS } from '../constants'
 
+import { ClaimHotbody } from './ClaimHotbody'
 import { ImportToken } from './ImportToken'
 
 type WalletsProps = {
@@ -69,7 +70,12 @@ export const Wallets: FC<WalletsProps> = ({ address }) => {
         <div className="loading">Loading...</div>
       )}
 
-      {isGoerli && <ImportToken />}
+      {isGoerli && (
+        <>
+          <ImportToken />
+          <ClaimHotbody address={address} />
+        </>
+      )}
     </div>
   )
 }

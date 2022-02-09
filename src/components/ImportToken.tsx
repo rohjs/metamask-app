@@ -29,17 +29,15 @@ export const ImportToken = () => {
   }
 
   return (
-    <div>
-      <div className="walletGuide">
-        <h3>
-          Can't find $HOTBODY
-          <br />
-          in your wallet? 🥲
-        </h3>
-        <button className="outlined-button" onClick={importToken} type="button">
-          Import $HOTBODY 🚀
-        </button>
-      </div>
+    <div className="walletGuide">
+      <h3>
+        Can't find $HOTBODY
+        <br />
+        in your wallet? 🥲
+      </h3>
+      <button className="outlined-button" onClick={importToken} type="button">
+        Import $HOTBODY 🚀
+      </button>
     </div>
   )
 }
