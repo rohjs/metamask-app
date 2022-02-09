@@ -1,7 +1,6 @@
 import { FormEvent } from 'react'
 import { FixedNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
-import './App.css'
 
 type FormProps = {
   address: string

@@ -41,9 +41,10 @@ button {
   border: none;
   outline: none;
   cursor: pointer;
-  transition: 200ms;
+  transition: 150ms;
 }
 
+button:hover,
 button:focus,
 button:active {
   outline: none;
@@ -54,6 +55,19 @@ button:disabled {
   background-color: #85d7ff;
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+button.outlined-button {
+  color: #1fb6ff;
+  background-color: #fff;
+  border: 1px solid;
+}
+
+button.outlined-button:hover,
+button.outlined-button:focus,
+button.outlined-button:active {
+  color: #009eeb;
+  /* border-color: #009eeb; */
 }
 
 input {
@@ -94,6 +108,7 @@ hr {
 .walletList {
   padding-left: 0;
   margin-top: 40px;
+  margin-bottom: 32px;
   list-style: none;
 }
 
@@ -111,4 +126,15 @@ hr {
 
 .walletList li span {
   margin-right: 1em;
+}
+
+.walletGuide {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.walletGuide h3 {
+  flex-shrink: 0;
+  margin-right: 20px;
 }

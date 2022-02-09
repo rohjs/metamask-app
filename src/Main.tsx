@@ -1,12 +1,12 @@
-import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ethers } from 'ethers'
 import store from 'store'
 import './App.css'
 
-import { Effects } from './Effects'
-import { Form } from './Form'
-import { Wallets } from './Wallets'
+import { Effects } from './components/Effects'
+import { Form } from './components/Form'
+import { Wallets } from './components/Wallets'
 
 function Main() {
   const [address, setAddress] = useState(store.get(`meta.account`) || '')
