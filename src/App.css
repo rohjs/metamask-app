@@ -102,6 +102,28 @@ input::placeholder {
   color: #8492a6;
 }
 
+select {
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #273444;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  transition: 150ms;
+  appearance: none;
+}
+
+select:hover,
+select:focus,
+select:active {
+  border-color: #acb4be;
+}
+
 form button {
   width: 100%;
   margin-top: 20px;

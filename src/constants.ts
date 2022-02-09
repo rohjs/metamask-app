@@ -39,4 +39,26 @@ export const ABI: AbiItem[] = [
     outputs: [{ name: '', type: 'uint8' }],
     type: 'function',
   },
+  // transfer
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_to',
+        type: 'address',
+      },
+      {
+        name: '_value',
+        type: 'uint256',
+      },
+    ],
+    name: 'transfer',
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+      },
+    ],
+    type: 'function',
+  },
 ]
