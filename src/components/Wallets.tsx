@@ -2,12 +2,9 @@ import { useEffect, useState } from 'react'
 import Web3 from 'web3'
 import { ethers } from 'ethers'
 
-import {
-  ABI,
-  HOTBODY_TOKEN_ADDRESS,
-  HOTBODY_TOKEN_DECIMALS,
-  HOTBODY_TOKEN_SYMBOL,
-} from '../constants'
+import { ABI, HOTBODY_TOKEN_ADDRESS } from '../constants'
+
+import { ImportToken } from './ImportToken'
 
 type WalletsProps = {
   address: string
@@ -30,8 +27,6 @@ export const Wallets = ({ address }: WalletsProps) => {
     try {
       const hotbodyBalance = await tokenInst.methods.balanceOf(address).call()
       const hotbodyDecimals = Number(await tokenInst.methods.decimals().call())
-      // const tokenName = await tokenInst.methods.name().call()
-      // const tokenSymbol = await tokenInst.methods.symbol().call()
 
       hotbodyAmount = web3.utils.fromWei(
         hotbodyBalance,
@@ -45,20 +40,6 @@ export const Wallets = ({ address }: WalletsProps) => {
       { name: 'eth', balance: ethAmount },
       { name: 'hotbody', balance: hotbodyAmount },
     ])
-  }
-
-  const importToken = async () => {
-    await ethereum.request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: HOTBODY_TOKEN_ADDRESS,
-          symbol: HOTBODY_TOKEN_SYMBOL,
-          decimals: HOTBODY_TOKEN_DECIMALS,
-        },
-      },
-    })
   }
 
   useEffect(() => {
@@ -82,16 +63,7 @@ export const Wallets = ({ address }: WalletsProps) => {
         })}
       </ul>
 
-      <div className="walletGuide">
-        <h3>
-          Can't find $HOTBODY
-          <br />
-          in your wallet? 🥲
-        </h3>
-        <button className="outlined-button" onClick={importToken} type="button">
-          Import $HOTBODY 🚀
-        </button>
-      </div>
+      <ImportToken />
     </div>
   )
 }
