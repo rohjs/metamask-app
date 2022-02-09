@@ -1,3 +1,5 @@
+import { FC } from 'react'
+
 import type { Modal } from '../../types/modal'
 
 import { ErrorModal } from './Error'
@@ -10,7 +12,7 @@ type ModalViewProps = {
   modal: Modal
 }
 
-export const ModalView = ({ modal }: ModalViewProps) => {
+export const ModalView: FC<ModalViewProps> = ({ modal }) => {
   switch (modal.type) {
     case 'Error':
       return <ErrorModal {...modal.props} />

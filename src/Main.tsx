@@ -31,21 +31,23 @@ function Main() {
   return (
     <div className="app">
       <div className="content">
-        <dl>
-          <dt>Address</dt>
-          <dd>{address || '-'}</dd>
-        </dl>
-
         {address ? (
           <>
+            <dl className="address">
+              <dt>Address</dt>
+              <dd>{address || '-'}</dd>
+            </dl>
             <Wallets address={address} />
             <hr />
             <Form address={address} />
           </>
         ) : (
-          <button onClick={connect} disabled={!!address} type="button">
-            Connect
-          </button>
+          <>
+            <h1>Welcome!</h1>
+            <button onClick={connect} disabled={!!address} type="button">
+              Connect 🦊
+            </button>
+          </>
         )}
       </div>
       {window.ethereum && <Effects updateAddress={updateAddress} />}

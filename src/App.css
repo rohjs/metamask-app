@@ -18,18 +18,23 @@
   padding: 100px 20px;
 }
 
-.content {
-  max-width: 500px;
+.app h1 {
+  margin-bottom: 30px;
 }
 
-.content dl {
+.content {
+  max-width: 540px;
+}
+
+.address {
   display: flex;
   align-items: center;
+  margin-bottom: 40px;
   font-size: 20px;
 }
 
-.content dl dt {
-  margin-right: 32px;
+.address dt {
+  margin-right: 16px;
   font-weight: 700;
 }
 
@@ -105,7 +110,7 @@ form button {
 hr {
   height: 1px;
   margin: 40px 0;
-  background-color: #8492a6;
+  background-color: #d3dce6;
   border: none;
 }
 

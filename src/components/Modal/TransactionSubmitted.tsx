@@ -1,3 +1,5 @@
+import { FC } from 'react'
+
 import { useModal } from '../../hooks'
 import { ModalType } from '../../types/modal.d'
 
@@ -5,9 +7,9 @@ type TransactionSubmittedModalProps = {
   txid: string
 }
 
-export const TransactionSubmittedModal = ({
+export const TransactionSubmittedModal: FC<TransactionSubmittedModalProps> = ({
   txid,
-}: TransactionSubmittedModalProps) => {
+}) => {
   const { ethereum } = window
   const { removeModal } = useModal()
   const closeModal = () => {

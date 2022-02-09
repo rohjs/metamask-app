@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Web3 from 'web3'
 import { ethers } from 'ethers'
 
@@ -10,10 +10,12 @@ type WalletsProps = {
   address: string
 }
 
-export const Wallets = ({ address }: WalletsProps) => {
+export const Wallets: FC<WalletsProps> = ({ address }) => {
   const [wallets, setWallets] = useState<WalletBalance[]>([])
 
   const { ethereum } = window
+  const isGoerli = ethereum.chainId === '0x5'
+
   const provider = new ethers.providers.Web3Provider(ethereum)
   const web3 = new Web3(Web3.givenProvider)
   const tokenInst = new web3.eth.Contract(ABI, HOTBODY_TOKEN_ADDRESS)
@@ -63,7 +65,7 @@ export const Wallets = ({ address }: WalletsProps) => {
         })}
       </ul>
 
-      <ImportToken />
+      {isGoerli && <ImportToken />}
     </div>
   )
 }

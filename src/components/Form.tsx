@@ -1,4 +1,4 @@
-import { FormEvent } from 'react'
+import { FC, FormEvent } from 'react'
 import { FixedNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 
@@ -9,7 +9,7 @@ type FormProps = {
   address: string
 }
 
-export const Form = ({ address }: FormProps) => {
+export const Form: FC<FormProps> = ({ address }) => {
   const { addModal } = useModal()
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -55,12 +55,7 @@ export const Form = ({ address }: FormProps) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="toAddress"
-        placeholder="Address"
-        defaultValue="0x903252da44366cDF3b510144D8f3B863e9Fb4870"
-      />
+      <input type="text" name="toAddress" placeholder="ETH Address" />
       <input
         type="text"
         pattern="[-+]?[0-9]*[.,]?[0-9]+"
