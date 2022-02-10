@@ -9,8 +9,6 @@ type ClaimHotbodyProps = {
   address: string
 }
 
-const webhookUrl = `https://hooks.slack.com/services/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`
-
 export const ClaimHotbody: FC<ClaimHotbodyProps> = ({ address }) => {
   const [showModal, setShowModal] = useState(false)
   const [amount, setAmount] = useState<number | string>('')
@@ -55,7 +53,7 @@ export const ClaimHotbody: FC<ClaimHotbodyProps> = ({ address }) => {
     }
 
     try {
-      await axios.post(`${webhookUrl}`, payload, {
+      await axios.post(`${process.env.REACT_APP_SLACK_WEBHOOK}`, payload, {
         headers: {
           'Content-type': 'application/x-www-form-urlencoded',
         },
