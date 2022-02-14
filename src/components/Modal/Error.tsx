@@ -1,7 +1,14 @@
+import { FC } from 'react'
 import { useModal } from '../../hooks'
 import { ModalType } from '../../types/modal.d'
 
-export const ErrorModal = () => {
+type ErrorModalProps = {
+  message?: string
+}
+
+const DEFAULT_MESSAGE = '😱 Oops! Something went wrong'
+
+export const ErrorModal: FC<ErrorModalProps> = ({ message }) => {
   const { removeModal } = useModal()
   const closeModal = () => {
     removeModal(ModalType.Error)
@@ -9,7 +16,7 @@ export const ErrorModal = () => {
 
   return (
     <aside>
-      <h1>😱 Oops! Something went wrong</h1>
+      <h1>{message || DEFAULT_MESSAGE}</h1>
       <button onClick={closeModal} type="button">
         Okay
       </button>

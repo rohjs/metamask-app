@@ -22,9 +22,13 @@ export const Modal = () => {
 
   return (
     <ModalPortal>
-      {modals.map((modal) => (
-        <ModalView key={modal.type} modal={modal} />
-      ))}
+      <ul>
+        {modals.slice(0, 4).map((modal, i) => (
+          <li key={`${modal.type}.${i}`}>
+            <ModalView modal={modal} />
+          </li>
+        ))}
+      </ul>
     </ModalPortal>
   )
 }

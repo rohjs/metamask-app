@@ -25,10 +25,23 @@ export const useTransfer = (address: string) => {
   )
 
   const handleError = (error: any) => {
-    console.log(error)
-    switch (error.code) {
+    let code = error.code
+    if (typeof code !== 'number' && error.error) {
+      code = error.error.code
+    }
+
+    switch (code) {
       case 4001:
         addModal({ type: ModalType.TransactionCanceled })
+        break
+      case -32000:
+      case -32603:
+        addModal({
+          type: ModalType.Error,
+          props: {
+            message: '🥺 Insufficient funds',
+          },
+        })
         break
       default:
         addModal({ type: ModalType.Error })
@@ -47,8 +60,8 @@ export const useTransfer = (address: string) => {
         type: ModalType.TransactionSubmitted,
         props: { txid: hash },
       })
-    } catch (error) {
-      handleError(error)
+    } catch (err: any) {
+      handleError(err)
     }
   }
 
