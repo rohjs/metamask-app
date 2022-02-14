@@ -21,7 +21,11 @@ export const Wallets: FC<WalletsProps> = ({ address }) => {
   return (
     <div>
       <Suspense fallback={<div className="loading">Loading...</div>}>
-        <WalletList ethBalance={ethBalance} hbdBalance={hbdBalance} />
+        <WalletList
+          ethBalance={ethBalance}
+          hbdBalance={hbdBalance}
+          isGoerli={isGoerli}
+        />
       </Suspense>
 
       {isGoerli && (

@@ -2,10 +2,15 @@ import { FC } from 'react'
 
 type WalletListProps = {
   ethBalance: string
-  hbdBalance: string | null
+  hbdBalance: string
+  isGoerli: boolean
 }
 
-const WalletList: FC<WalletListProps> = ({ ethBalance, hbdBalance }) => {
+const WalletList: FC<WalletListProps> = ({
+  ethBalance,
+  hbdBalance,
+  isGoerli,
+}) => {
   return (
     <ul className="walletList">
       <li>
@@ -15,7 +20,7 @@ const WalletList: FC<WalletListProps> = ({ ethBalance, hbdBalance }) => {
 
       <li>
         <span>HOTBODY</span>
-        <strong>{hbdBalance || 'Not Supported'}</strong>
+        <strong>{isGoerli ? hbdBalance : 'Not Supported'}</strong>
       </li>
     </ul>
   )
