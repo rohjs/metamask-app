@@ -1,6 +1,14 @@
-import { ChangeEvent, FC, FocusEvent, FormEvent, useState } from 'react'
+import {
+  ChangeEvent,
+  FC,
+  FocusEvent,
+  FormEvent,
+  useEffect,
+  useState,
+} from 'react'
 import { ethers, FixedNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
+import store from 'store'
 import cx from 'classnames'
 
 import { useModal, useNetwork } from '../hooks'
@@ -45,6 +53,15 @@ export const Form: FC<FormProps> = ({ address }) => {
     signer
   )
 
+  const reloadPage = () => {
+    window.location.reload()
+  }
+
+  const handleEthTransferEvent = () => {
+    store.remove(`meta.eth.txid`)
+    reloadPage()
+  }
+
   const handleErrors = (error: any) => {
     console.log(error)
     switch (error.code) {
@@ -58,20 +75,17 @@ export const Form: FC<FormProps> = ({ address }) => {
   }
 
   const transferEth = async ({ receiver, amount }: TransferFunctionParams) => {
-    const params = {
-      from: address,
-      to: receiver,
-      value: amount,
-    }
-
     try {
-      const txid = await ethereum.request({
-        method: 'eth_sendTransaction',
-        params: [params],
+      const { hash } = await signer.sendTransaction({
+        to: receiver,
+        from: address,
+        value: amount,
       })
+      store.set(`meta.eth.txid`, hash)
+      provider.once(hash, handleEthTransferEvent)
       addModal({
         type: ModalType.TransactionSubmitted,
-        props: { txid },
+        props: { txid: hash },
       })
     } catch (error: any) {
       handleErrors(error)
@@ -88,10 +102,11 @@ export const Form: FC<FormProps> = ({ address }) => {
       .split('.')[0]
 
     try {
-      const txid = await hbdContract.transfer(receiver, weiAmount)
+      const { hash } = await hbdContract.transfer(receiver, weiAmount)
+
       addModal({
         type: ModalType.TransactionSubmitted,
-        props: { txid },
+        props: { txid: hash },
       })
     } catch (err) {
       if (error) {
@@ -152,6 +167,20 @@ export const Form: FC<FormProps> = ({ address }) => {
       setError((prev) => ({ ...prev, amount: false }))
     }
   }
+
+  useEffect(() => {
+    const ongoingEthTx = store.get(`meta.eth.txid`)
+    if (!!ongoingEthTx) {
+      provider.once(ongoingEthTx, handleEthTransferEvent)
+    }
+  }, [])
+
+  useEffect(() => {
+    hbdContract.on('Transfer', reloadPage)
+    return () => {
+      hbdContract.off('Transfer', reloadPage)
+    }
+  }, [])
 
   return (
     <form onSubmit={handleSubmit}>
