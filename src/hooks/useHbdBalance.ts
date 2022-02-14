@@ -1,11 +1,13 @@
 import { ethers } from 'ethers'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useAppSelector, usePrevious } from '.'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useAppDispatch, useAppSelector, usePrevious } from '.'
 import { ETHERS_ABI, HOTBODY_TOKEN_ADDRESS } from '../constants'
+import { getHbd, setHbd } from '../store/balance'
 import { getChainId } from '../store/network'
 
 export const useHbdBalance = () => {
-  const [balance, setBalance] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
+  const balance = useAppSelector(getHbd)
   const prevBalance = usePrevious(balance)
   const chainId = useAppSelector(getChainId)
 
@@ -32,9 +34,9 @@ export const useHbdBalance = () => {
     const value = ethers.utils.formatUnits(rawBalance, 'mwei').split('.')[0]
 
     if (prevBalance !== value) {
-      setBalance(value)
+      dispatch(setHbd(value))
     }
-  }, [chainId, contract, prevBalance, signer])
+  }, [chainId, contract, dispatch, prevBalance, signer])
 
   useEffect(() => {
     fetchBalance()
@@ -46,6 +48,4 @@ export const useHbdBalance = () => {
       contract?.off('Transfer', fetchBalance)
     }
   }, [contract, fetchBalance])
-
-  return balance
 }

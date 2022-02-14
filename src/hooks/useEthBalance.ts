@@ -1,10 +1,12 @@
 import { ethers } from 'ethers'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { usePrevious } from '.'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useAppDispatch, useAppSelector, usePrevious } from '.'
+import { getEth, setEth } from '../store/balance'
 
 // NOTE: https://medium.com/@clashofcoins/how-to-fetch-eth-balance-in-react-with-hooks-89e48ed6e842
 export const useEthBalance = () => {
-  const [balance, setBalance] = useState('')
+  const dispatch = useAppDispatch()
+  const balance = useAppSelector(getEth)
   const prevBalance = usePrevious(balance)
 
   const provider = useMemo(
@@ -19,9 +21,9 @@ export const useEthBalance = () => {
     const value = ethers.utils.formatEther(rawBalance)
 
     if (prevBalance !== value) {
-      setBalance(value)
+      dispatch(setEth(value))
     }
-  }, [prevBalance, provider, signer])
+  }, [dispatch, prevBalance, provider, signer])
 
   useEffect(() => {
     fetchBalance()
@@ -33,6 +35,4 @@ export const useEthBalance = () => {
       provider.off('block', fetchBalance)
     }
   }, [fetchBalance, provider])
-
-  return balance
 }

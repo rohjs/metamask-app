@@ -1,6 +1,7 @@
 import { FC, lazy, Suspense } from 'react'
 
-import { useEthBalance, useHbdBalance, useNetwork } from '../hooks'
+import { useAppSelector, useNetwork } from '../hooks'
+import { getEth, getHbd } from '../store/balance'
 
 import { ClaimHotbody } from './ClaimHotbody'
 import { ImportToken } from './ImportToken'
@@ -12,8 +13,8 @@ type WalletsProps = {
 const WalletList = lazy(() => import('./WalletList'))
 
 export const Wallets: FC<WalletsProps> = ({ address }) => {
-  const ethBalance = useEthBalance()
-  const hbdBalance = useHbdBalance()
+  const ethBalance = useAppSelector(getEth)
+  const hbdBalance = useAppSelector(getHbd)
 
   const { isGoerli } = useNetwork()
 

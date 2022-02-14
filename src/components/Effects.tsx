@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo } from 'react'
 import { ethers } from 'ethers'
 import store from 'store'
 
-import { useNetwork } from '../hooks'
+import { useEthBalance, useHbdBalance, useNetwork } from '../hooks'
 
 type EffectsProps = {
   updateAddress: (newAcccount: string) => void
@@ -11,6 +11,9 @@ type EffectsProps = {
 export const Effects: FC<EffectsProps> = ({ updateAddress }) => {
   const { ethereum } = window
   const { updateChainId } = useNetwork()
+
+  useEthBalance()
+  useHbdBalance()
 
   const provider = useMemo(
     () => new ethers.providers.Web3Provider(ethereum),
