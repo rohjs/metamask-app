@@ -56,7 +56,7 @@ function Main() {
           </>
         )}
       </div>
-      {window.ethereum && <Effects updateAddress={updateAddress} />}
+      {window.ethereum && address && <Effects updateAddress={updateAddress} />}
     </div>
   )
 }

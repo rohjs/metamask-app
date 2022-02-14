@@ -1,6 +1,8 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import type { RootState, AppDispatch } from '../store'
 
+export { useEthBalance } from './useEthBalance'
+export { useHbdBalance } from './useHbdBalance'
 export { useModal } from './useModal'
 export { useNetwork } from './useNetwork'
 export { usePrevious } from './usePrevious'
