@@ -53,13 +53,13 @@ export const Form: FC<FormProps> = ({ address }) => {
     signer
   )
 
-  const reloadPage = () => {
+  const handleHbdTransferEvent = () => {
     window.location.reload()
   }
 
   const handleEthTransferEvent = () => {
     store.remove(`meta.eth.txid`)
-    reloadPage()
+    window.location.reload()
   }
 
   const handleErrors = (error: any) => {
@@ -87,7 +87,7 @@ export const Form: FC<FormProps> = ({ address }) => {
         type: ModalType.TransactionSubmitted,
         props: { txid: hash },
       })
-    } catch (error: any) {
+    } catch (error) {
       handleErrors(error)
     }
   }
@@ -109,10 +109,7 @@ export const Form: FC<FormProps> = ({ address }) => {
         props: { txid: hash },
       })
     } catch (err) {
-      if (error) {
-        handleErrors(error)
-        return
-      }
+      handleErrors(err)
     }
   }
 
@@ -171,14 +168,20 @@ export const Form: FC<FormProps> = ({ address }) => {
   useEffect(() => {
     const ongoingEthTx = store.get(`meta.eth.txid`)
     if (!!ongoingEthTx) {
+      const provider = new ethers.providers.Web3Provider(ethereum)
       provider.once(ongoingEthTx, handleEthTransferEvent)
     }
-  }, [])
+  }, [ethereum])
 
   useEffect(() => {
-    hbdContract.on('Transfer', reloadPage)
+    const hbdContract = new ethers.Contract(
+      HOTBODY_TOKEN_ADDRESS,
+      ETHERS_ABI,
+      signer
+    )
+    hbdContract.on('Transfer', handleHbdTransferEvent)
     return () => {
-      hbdContract.off('Transfer', reloadPage)
+      hbdContract.off('Transfer', handleHbdTransferEvent)
     }
   }, [])
 
