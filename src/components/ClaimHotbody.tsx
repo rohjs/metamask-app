@@ -10,26 +10,26 @@ type ClaimHotbodyProps = {
 }
 
 export const ClaimHotbody: FC<ClaimHotbodyProps> = ({ address }) => {
-  const [showModal, setShowModal] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
   const [amount, setAmount] = useState<number | string>('')
-  const modalRef = useRef<HTMLDivElement>(null)
+  const popupRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { addModal } = useModal()
 
-  const openClaimModal = () => {
-    setShowModal(true)
+  const openclaimPopup = () => {
+    setShowPopup(true)
     inputRef?.current?.focus()
   }
 
-  const closeAndResetClaimModal = () => {
-    setShowModal(false)
+  const closeAndResetclaimPopup = () => {
+    setShowPopup(false)
     setAmount('')
   }
 
-  const closeClaimModalOnBlur = (e: MouseEvent) => {
-    if (!modalRef?.current?.contains(e.target as Node)) {
-      closeAndResetClaimModal()
+  const closeclaimPopupOnBlur = (e: MouseEvent) => {
+    if (!popupRef?.current?.contains(e.target as Node)) {
+      closeAndResetclaimPopup()
     }
   }
 
@@ -62,15 +62,15 @@ export const ClaimHotbody: FC<ClaimHotbodyProps> = ({ address }) => {
       addModal({ type: ModalType.Error })
     }
 
-    closeAndResetClaimModal()
+    closeAndResetclaimPopup()
   }
 
   useEffect(() => {
-    if (!showModal) return
-    window.addEventListener('click', closeClaimModalOnBlur)
+    if (!showPopup) return
+    window.addEventListener('click', closeclaimPopupOnBlur)
 
     return () => {
-      window.removeEventListener('click', closeClaimModalOnBlur)
+      window.removeEventListener('click', closeclaimPopupOnBlur)
     }
   })
 
@@ -80,16 +80,16 @@ export const ClaimHotbody: FC<ClaimHotbodyProps> = ({ address }) => {
     <div className="walletGuide">
       <h3>Need $HOTBODY? 💰</h3>
 
-      <div className="claimHotbody" ref={modalRef}>
+      <div className="claimHotbody" ref={popupRef}>
         <button
-          className="secondary-button"
-          onClick={openClaimModal}
+          className="secondaryButton"
+          onClick={openclaimPopup}
           type="button"
         >
           Claim HOTBODY 💸
         </button>
 
-        <div className={cx('claimModal', { show: showModal })}>
+        <div className={cx('claimPopup', { show: showPopup })}>
           <input
             ref={inputRef}
             onChange={handleChange}

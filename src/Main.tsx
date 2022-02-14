@@ -7,6 +7,7 @@ import './App.css'
 import { CurrentNetwork } from './components/CurrentNetwork'
 import { Effects } from './components/Effects'
 import { Form } from './components/Form'
+import { UserMenu } from './components/UserMenu'
 import { Wallets } from './components/Wallets'
 
 function Main() {
@@ -22,7 +23,9 @@ function Main() {
   const connect = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')
     const accounts = await provider.send('eth_requestAccounts', [])
-    if (accounts && accounts[0]) updateAddress(accounts[0])
+    if (accounts && accounts[0]) {
+      updateAddress(accounts[0])
+    }
   }
 
   useEffect(() => {
@@ -32,9 +35,10 @@ function Main() {
   return (
     <div className="app">
       <div className="content">
-        <CurrentNetwork />
         {address ? (
           <>
+            <UserMenu address={address} />
+            <CurrentNetwork />
             <dl className="address">
               <dt>Address</dt>
               <dd>{address || '-'}</dd>

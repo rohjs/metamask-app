@@ -74,27 +74,27 @@ button:disabled {
   opacity: 0.5;
 }
 
-button.outlined-button {
+button.outlinedButton {
   color: #1fb6ff;
   background-color: #fff;
   border: 1px solid;
 }
 
-button.outlined-button:hover,
-button.outlined-button:focus,
-button.outlined-button:active {
+button.outlinedButton:hover,
+button.outlinedButton:focus,
+button.outlinedButton:active {
   color: #009eeb;
 }
 
-button.secondary-button {
+button.secondaryButton {
   color: #273444;
   background-color: #fff;
   border: 1px solid;
 }
 
-button.secondary-button:hover,
-button.secondary-button:focus,
-button.secondary-button:active {
+button.secondaryButton:hover,
+button.secondaryButton:focus,
+button.secondaryButton:active {
   border-color: #acb4be;
 }
 
@@ -187,7 +187,7 @@ hr {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin: 12px 0 20px;
 }
 
 .network > div {
@@ -269,11 +269,13 @@ hr {
   width: 230px;
 }
 
-.claimHotbody {
+.claimHotbody,
+.userMenu {
   position: relative;
 }
 
-.claimModal {
+.claimPopup,
+.userMenuPopup {
   position: absolute;
   top: calc(100% + 16px);
   left: 0;
@@ -289,13 +291,14 @@ hr {
   transition: 200ms;
 }
 
-.claimModal.show {
+.claimPopup.show,
+.userMenuPopup.show {
   opacity: 1;
   visibility: visible;
   transform: translate3d(0, 0, 0);
 }
 
-.claimModal input {
+.claimPopup input {
   height: 48px;
   padding: 0 16px;
   margin-bottom: 0;
@@ -305,7 +308,8 @@ hr {
   border: 1px solid #eff2f7;
 }
 
-.claimModal button {
+.claimPopup button,
+.userMenuPopup button {
   flex-shrink: 0;
   width: 100px;
   height: 48px;
@@ -314,11 +318,12 @@ hr {
   font-size: 18px;
 }
 
-.claimModal button:disabled {
+.claimPopup button:disabled {
   background-color: #3c4858;
 }
 
-.claimModal::before {
+.claimPopup::before,
+.userMenuPopup::before {
   position: absolute;
   top: 0;
   left: 32px;
@@ -330,6 +335,78 @@ hr {
   border-left: 10px solid transparent;
   content: '';
   transform: translateY(-100%);
+}
+
+.userMenu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.userMenu > button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 200ms;
+}
+
+.userMenu > button:hover {
+  opacity: 0.4;
+}
+
+.userMenu > button div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.userMenu > button svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.userMenuPopup {
+  top: 50%;
+  left: calc(100% + 16px);
+  width: auto;
+  transform: translate3d(-8px, -50%, 0);
+}
+
+.userMenuPopup.show {
+  top: 50%;
+  left: calc(100% + 16px);
+  transform: translate3d(0, -50%, 0);
+}
+
+.userMenuPopup::before {
+  top: 50%;
+  left: -20px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-right: 10px solid #273444;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid transparent;
+  transform: translateY(-50%);
+}
+
+.userMenuPopup button {
+  width: auto;
+  margin: 0;
+  background-color: #ff4949;
+}
+
+.userMenuPopup button:hover,
+.userMenuPopup button:focus,
+.userMenuPopup button:active {
+  background-color: #e43333;
 }
 
 .loading {

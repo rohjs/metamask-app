@@ -35,7 +35,7 @@ export const ImportToken = () => {
         <br />
         in your wallet? 🥲
       </h3>
-      <button className="outlined-button" onClick={importToken} type="button">
+      <button className="outlinedButton" onClick={importToken} type="button">
         Import $HOTBODY 🚀
       </button>
     </div>
