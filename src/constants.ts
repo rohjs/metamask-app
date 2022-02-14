@@ -1,12 +1,10 @@
-import type { AbiItem } from 'web3-utils'
-
 export const HOTBODY_TOKEN_ADDRESS =
   '0xf0ed313ba9bd3935182dd952bd14973186769039'
 export const HOTBODY_TOKEN_SYMBOL = 'HOTBODY'
 export const HOTBODY_TOKEN_DECIMALS = 6
 
 // NOTE: https://eips.ethereum.org/EIPS/eip-20#token
-export const ABI: AbiItem[] = [
+export const ABI = [
   // balanceOf
   {
     constant: true,
@@ -31,7 +29,7 @@ export const ABI: AbiItem[] = [
     outputs: [{ name: '', type: 'string' }],
     type: 'function',
   },
-  // decimal
+  // decimals
   {
     constant: true,
     inputs: [],
@@ -61,4 +59,12 @@ export const ABI: AbiItem[] = [
     ],
     type: 'function',
   },
+]
+
+export const ETHERS_ABI = [
+  'function balanceOf(address owner) view returns (uint256)',
+  'function decimals() view returns (uint8)',
+  'function symbol() view returns (string)',
+  'function transfer(address to, uint amount) returns (bool)',
+  'event Transfer(address indexed from, address indexed to, uint amount)',
 ]

@@ -1,12 +1,15 @@
 import { ChangeEvent, FC, FocusEvent, FormEvent, useState } from 'react'
-import Web3 from 'web3'
-import { FixedNumber } from 'ethers'
+import { ethers, FixedNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 import cx from 'classnames'
 
 import { useModal, useNetwork } from '../hooks'
 import { ModalType } from '../types/modal.d'
-import { ABI, HOTBODY_TOKEN_ADDRESS } from '../constants'
+import {
+  ETHERS_ABI,
+  HOTBODY_TOKEN_ADDRESS,
+  HOTBODY_TOKEN_DECIMALS,
+} from '../constants'
 
 type FormProps = {
   address: string
@@ -34,8 +37,13 @@ export const Form: FC<FormProps> = ({ address }) => {
   const { addModal } = useModal()
   const { isGoerli } = useNetwork()
 
-  const web3 = new Web3(ethereum)
-  const tokenInst = new web3.eth.Contract(ABI, HOTBODY_TOKEN_ADDRESS)
+  const provider = new ethers.providers.Web3Provider(ethereum)
+  const signer = provider.getSigner()
+  const hbdContract = new ethers.Contract(
+    HOTBODY_TOKEN_ADDRESS,
+    ETHERS_ABI,
+    signer
+  )
 
   const handleErrors = (error: any) => {
     console.log(error)
@@ -74,21 +82,23 @@ export const Form: FC<FormProps> = ({ address }) => {
     receiver,
     amount,
   }: TransferFunctionParams) => {
-    // FIXME: 단위 변환...
-    const hexAmount = web3.utils.toHex(Number(amount) * 1e-12)
+    let weiAmount = ethers.utils.formatUnits(amount, 'wei')
+    weiAmount = ethers.utils
+      .formatUnits(weiAmount, 18 - HOTBODY_TOKEN_DECIMALS)
+      .split('.')[0]
 
-    await tokenInst.methods
-      .transfer(receiver, hexAmount)
-      .send({ from: address }, function (error: any, txid: string) {
-        if (error) {
-          handleErrors(error)
-          return
-        }
-        addModal({
-          type: ModalType.TransactionSubmitted,
-          props: { txid },
-        })
+    try {
+      const txid = await hbdContract.transfer(receiver, weiAmount)
+      addModal({
+        type: ModalType.TransactionSubmitted,
+        props: { txid },
       })
+    } catch (err) {
+      if (error) {
+        handleErrors(error)
+        return
+      }
+    }
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
