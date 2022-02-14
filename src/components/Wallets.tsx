@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import Web3 from 'web3'
 import { ethers } from 'ethers'
 
+import { useNetwork } from '../hooks'
 import { ABI, HOTBODY_TOKEN_ADDRESS } from '../constants'
 
 import { ClaimHotbody } from './ClaimHotbody'
@@ -15,7 +16,7 @@ export const Wallets: FC<WalletsProps> = ({ address }) => {
   const [wallets, setWallets] = useState<WalletBalance[]>([])
 
   const { ethereum } = window
-  const isGoerli = ethereum.chainId === '0x5'
+  const { isGoerli } = useNetwork()
 
   const provider = new ethers.providers.Web3Provider(ethereum)
   const web3 = new Web3(Web3.givenProvider)

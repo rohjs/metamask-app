@@ -4,7 +4,7 @@ import { FixedNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 import cx from 'classnames'
 
-import { useModal } from '../hooks'
+import { useModal, useNetwork } from '../hooks'
 import { ModalType } from '../types/modal.d'
 import { ABI, HOTBODY_TOKEN_ADDRESS } from '../constants'
 
@@ -32,6 +32,7 @@ export const Form: FC<FormProps> = ({ address }) => {
 
   const { ethereum } = window
   const { addModal } = useModal()
+  const { isGoerli } = useNetwork()
 
   const web3 = new Web3(ethereum)
   const tokenInst = new web3.eth.Contract(ABI, HOTBODY_TOKEN_ADDRESS)
@@ -146,7 +147,7 @@ export const Form: FC<FormProps> = ({ address }) => {
     <form onSubmit={handleSubmit}>
       <select name="tokenType">
         <option value="ETH">ETH</option>
-        <option value="HOTBODY" disabled={ethereum.chainId !== '0x5'}>
+        <option value="HOTBODY" disabled={!isGoerli}>
           HOTBODY
         </option>
       </select>

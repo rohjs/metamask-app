@@ -27,7 +27,7 @@ const getNetworkName = (chainId: number) => {
 }
 
 export const CurrentNetwork = () => {
-  const { chainId } = useNetwork()
+  const { chainId, isGoerli } = useNetwork()
 
   if (!chainId) return null
 
@@ -41,7 +41,7 @@ export const CurrentNetwork = () => {
         <h2>{networkName}</h2>
       </div>
 
-      {chainId !== 5 && <p>HOTBODY is only supported in Goerli network 🔥</p>}
+      {!isGoerli && <p>HOTBODY is only supported in Goerli network 🔥</p>}
     </div>
   )
 }

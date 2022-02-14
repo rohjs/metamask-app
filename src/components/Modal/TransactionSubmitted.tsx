@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import { useModal } from '../../hooks'
+import { useModal, useNetwork } from '../../hooks'
 import { ModalType } from '../../types/modal.d'
 
 type TransactionSubmittedModalProps = {
@@ -10,15 +10,13 @@ type TransactionSubmittedModalProps = {
 export const TransactionSubmittedModal: FC<TransactionSubmittedModalProps> = ({
   txid,
 }) => {
-  const { ethereum } = window
+  const { isGoerli } = useNetwork()
   const { removeModal } = useModal()
   const closeModal = () => {
     removeModal(ModalType.TransactionSubmitted)
   }
 
-  const txidUrl = `https://${
-    ethereum.chainId === '0x5' ? 'goerli.' : ''
-  }etherscan.io/tx/${txid}`
+  const txidUrl = `https://${isGoerli ? 'goerli.' : ''}etherscan.io/tx/${txid}`
 
   return (
     <aside>
