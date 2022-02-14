@@ -347,13 +347,14 @@ hr {
   height: 40px;
   padding: 0;
   background-color: transparent;
-  border-radius: 10px;
+  border-radius: 20px;
+  border: 2px solid #fff;
   overflow: hidden;
   transition: 200ms;
 }
 
 .userMenu > button:hover {
-  opacity: 0.4;
+  box-shadow: 0 0 0 4px #1fb6ff;
 }
 
 .userMenu > button div {
