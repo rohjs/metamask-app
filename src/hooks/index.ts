@@ -6,6 +6,7 @@ export { useHbdBalance } from './useHbdBalance'
 export { useModal } from './useModal'
 export { useNetwork } from './useNetwork'
 export { usePrevious } from './usePrevious'
+export { useTransfer } from './useTransfer'
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch = () => useDispatch<AppDispatch>()

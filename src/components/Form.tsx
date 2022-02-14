@@ -1,23 +1,12 @@
 import { ChangeEvent, FC, FocusEvent, FormEvent, useState } from 'react'
-import { ethers, FixedNumber } from 'ethers'
+import { FixedNumber } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 import cx from 'classnames'
 
-import { useModal, useNetwork } from '../hooks'
-import { ModalType } from '../types/modal.d'
-import {
-  ETHERS_ABI,
-  HOTBODY_TOKEN_ADDRESS,
-  HOTBODY_TOKEN_DECIMALS,
-} from '../constants'
+import { useNetwork, useTransfer } from '../hooks'
 
 type FormProps = {
   address: string
-}
-
-type TransferFunctionParams = {
-  receiver: string
-  amount: string
 }
 
 type FormError = {
@@ -33,66 +22,8 @@ const INITIAL_ERROR: FormError = {
 export const Form: FC<FormProps> = ({ address }) => {
   const [error, setError] = useState<FormError>(INITIAL_ERROR)
 
-  const { ethereum } = window
-  const { addModal } = useModal()
   const { isGoerli } = useNetwork()
-
-  const provider = new ethers.providers.Web3Provider(ethereum)
-  const signer = provider.getSigner()
-  const hbdContract = new ethers.Contract(
-    HOTBODY_TOKEN_ADDRESS,
-    ETHERS_ABI,
-    signer
-  )
-
-  const handleErrors = (error: any) => {
-    console.log(error)
-    switch (error.code) {
-      case 4001:
-        addModal({ type: ModalType.TransactionCanceled })
-        break
-      default:
-        addModal({ type: ModalType.Error })
-        break
-    }
-  }
-
-  const transferEth = async ({ receiver, amount }: TransferFunctionParams) => {
-    try {
-      const { hash } = await signer.sendTransaction({
-        to: receiver,
-        from: address,
-        value: amount,
-      })
-      addModal({
-        type: ModalType.TransactionSubmitted,
-        props: { txid: hash },
-      })
-    } catch (error) {
-      handleErrors(error)
-    }
-  }
-
-  const transferHotbody = async ({
-    receiver,
-    amount,
-  }: TransferFunctionParams) => {
-    let weiAmount = ethers.utils.formatUnits(amount, 'wei')
-    weiAmount = ethers.utils
-      .formatUnits(weiAmount, 18 - HOTBODY_TOKEN_DECIMALS)
-      .split('.')[0]
-
-    try {
-      const { hash } = await hbdContract.transfer(receiver, weiAmount)
-
-      addModal({
-        type: ModalType.TransactionSubmitted,
-        props: { txid: hash },
-      })
-    } catch (err) {
-      handleErrors(err)
-    }
-  }
+  const { transferEth, transferHbd } = useTransfer(address)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -111,11 +42,12 @@ export const Form: FC<FormProps> = ({ address }) => {
       return
     }
 
+    // NOTE: 이거 체크
     const amount = FixedNumber.fromString(rawAmount).toHexString()
     const params = { receiver, amount }
 
     if (tokenType === 'ETH') transferEth(params)
-    else transferHotbody(params)
+    else transferHbd(params)
   }
 
   const validateInput = (e: FocusEvent<HTMLInputElement>) => {
