@@ -183,6 +183,37 @@ hr {
   border: none;
 }
 
+.network {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.network > div {
+  display: flex;
+  align-items: center;
+}
+
+.network span {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border-radius: 10px;
+}
+
+.network h2 {
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.network p {
+  font-size: 14px;
+  font-style: italic;
+  color: #8492a6;
+}
+
 .walletList {
   padding-left: 0;
   margin-top: 40px;

@@ -146,7 +146,9 @@ export const Form: FC<FormProps> = ({ address }) => {
     <form onSubmit={handleSubmit}>
       <select name="tokenType">
         <option value="ETH">ETH</option>
-        <option value="HOTBODY">HOTBODY</option>
+        <option value="HOTBODY" disabled={ethereum.chainId !== '0x5'}>
+          HOTBODY
+        </option>
       </select>
 
       <input

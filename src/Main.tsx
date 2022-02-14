@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import store from 'store'
 import './App.css'
 
+import { CurrentNetwork } from './components/CurrentNetwork'
 import { Effects } from './components/Effects'
 import { Form } from './components/Form'
 import { Wallets } from './components/Wallets'
@@ -31,6 +32,7 @@ function Main() {
   return (
     <div className="app">
       <div className="content">
+        <CurrentNetwork />
         {address ? (
           <>
             <dl className="address">
@@ -45,7 +47,7 @@ function Main() {
           <>
             <h1>Welcome!</h1>
             <button onClick={connect} disabled={!!address} type="button">
-              Connect 🦊
+              Connect a Wallet 🦊
             </button>
           </>
         )}
