@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import axios from 'axios'
 import cx from 'classnames'
 
@@ -27,11 +34,11 @@ export const ClaimHotbody: FC<ClaimHotbodyProps> = ({ address }) => {
     setAmount('')
   }
 
-  const closeclaimPopupOnBlur = (e: MouseEvent) => {
+  const closePopupOnBlur = useCallback((e: MouseEvent) => {
     if (!popupRef?.current?.contains(e.target as Node)) {
       closeAndResetclaimPopup()
     }
-  }
+  }, [])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
@@ -67,12 +74,12 @@ export const ClaimHotbody: FC<ClaimHotbodyProps> = ({ address }) => {
 
   useEffect(() => {
     if (!showPopup) return
-    window.addEventListener('click', closeclaimPopupOnBlur)
+    window.addEventListener('click', closePopupOnBlur)
 
     return () => {
-      window.removeEventListener('click', closeclaimPopupOnBlur)
+      window.removeEventListener('click', closePopupOnBlur)
     }
-  })
+  }, [closePopupOnBlur, showPopup])
 
   if (!address) return null
 

@@ -338,8 +338,8 @@ hr {
 }
 
 .userMenu {
-  display: flex;
-  justify-content: flex-end;
+  width: 40px;
+  margin-left: auto;
 }
 
 .userMenu > button {

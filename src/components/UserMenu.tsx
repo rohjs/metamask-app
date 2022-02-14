@@ -16,7 +16,7 @@ export const UserMenu: FC<UserMenuProps> = ({ address }) => {
     setShowPopup((prev) => !prev)
   }
 
-  const closeclaimPopupOnBlur = (e: MouseEvent) => {
+  const closePopupOnBlur = (e: MouseEvent) => {
     if (!popupRef?.current?.contains(e.target as Node)) {
       setShowPopup(false)
     }
@@ -29,12 +29,12 @@ export const UserMenu: FC<UserMenuProps> = ({ address }) => {
 
   useEffect(() => {
     if (!showPopup) return
-    window.addEventListener('click', closeclaimPopupOnBlur)
+    window.addEventListener('click', closePopupOnBlur)
 
     return () => {
-      window.removeEventListener('click', closeclaimPopupOnBlur)
+      window.removeEventListener('click', closePopupOnBlur)
     }
-  })
+  }, [showPopup])
 
   return (
     <div className="userMenu" ref={popupRef}>
