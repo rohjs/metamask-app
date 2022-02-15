@@ -214,6 +214,23 @@ hr {
   color: #8492a6;
 }
 
+.network p button {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  color: inherit;
+  text-decoration: underline;
+  background-color: transparent;
+  transition: none;
+}
+
+.network p button:hover {
+  opacity: 0.4;
+}
+
 .walletList {
   padding-left: 0;
   margin-top: 40px;

@@ -1,4 +1,6 @@
 import { useNetwork } from '../hooks'
+import { addModal } from '../store/modal'
+import { ModalType } from '../types/modal.d'
 
 const NETWORKS = {
   ethereum: '#60B4AD',
@@ -31,8 +33,24 @@ export const CurrentNetwork = () => {
 
   if (!chainId) return null
 
+  const { ethereum } = window
+
   const networkName = getNetworkName(chainId)
   const networkColor = NETWORKS[networkName]
+
+  const switchToGoerli = async () => {
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x5' }],
+      })
+    } catch (err: any) {
+      console.log(err)
+      addModal({
+        type: ModalType.Error,
+      })
+    }
+  }
 
   return (
     <div className="network">
@@ -41,7 +59,15 @@ export const CurrentNetwork = () => {
         <h2>{networkName}</h2>
       </div>
 
-      {!isGoerli && <p>HOTBODY is only supported in Goerli network 🔥</p>}
+      {!isGoerli && (
+        <p>
+          HOTBODY is only supported in{' '}
+          <button onClick={switchToGoerli} type="button">
+            Goerli network
+          </button>{' '}
+          🔥
+        </p>
+      )}
     </div>
   )
 }
