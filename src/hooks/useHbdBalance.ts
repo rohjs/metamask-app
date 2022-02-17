@@ -5,7 +5,7 @@ import { ETHERS_ABI, HOTBODY_TOKEN_ADDRESS } from '../constants'
 import { getHbd, setHbd } from '../store/balance'
 import { getChainId } from '../store/network'
 
-export const useHbdBalance = () => {
+export const useHbdBalance = (address: string) => {
   const dispatch = useAppDispatch()
   const balance = useAppSelector(getHbd)
   const prevBalance = usePrevious(balance)
@@ -15,7 +15,6 @@ export const useHbdBalance = () => {
     () => new ethers.providers.Web3Provider(window.ethereum),
     []
   )
-  const signer = provider.getSigner()
 
   const contract = useMemo(() => {
     if (chainId === 5) {
@@ -29,14 +28,13 @@ export const useHbdBalance = () => {
       return null
     }
 
-    const address = await signer.getAddress()
     const rawBalance = await contract?.balanceOf(address)
     const value = ethers.utils.formatUnits(rawBalance, 'mwei').split('.')[0]
 
     if (prevBalance !== value) {
       dispatch(setHbd(value))
     }
-  }, [chainId, contract, dispatch, prevBalance, signer])
+  }, [address, chainId, contract, dispatch, prevBalance])
 
   useEffect(() => {
     fetchBalance()

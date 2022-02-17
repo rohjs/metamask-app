@@ -5,15 +5,16 @@ import store from 'store'
 import { useEthBalance, useHbdBalance, useNetwork } from '../hooks'
 
 type EffectsProps = {
+  address: string
   updateAddress: (newAcccount: string) => void
 }
 
-export const Effects: FC<EffectsProps> = ({ updateAddress }) => {
+export const Effects: FC<EffectsProps> = ({ address, updateAddress }) => {
   const { ethereum } = window
   const { updateChainId } = useNetwork()
 
-  useEthBalance()
-  useHbdBalance()
+  useEthBalance(address)
+  useHbdBalance(address)
 
   const provider = useMemo(
     () => new ethers.providers.Web3Provider(ethereum),

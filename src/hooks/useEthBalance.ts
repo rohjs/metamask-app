@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector, usePrevious } from '.'
 import { getEth, setEth } from '../store/balance'
 
 // NOTE: https://medium.com/@clashofcoins/how-to-fetch-eth-balance-in-react-with-hooks-89e48ed6e842
-export const useEthBalance = () => {
+export const useEthBalance = (address: string) => {
   const dispatch = useAppDispatch()
   const balance = useAppSelector(getEth)
   const prevBalance = usePrevious(balance)
@@ -13,17 +13,15 @@ export const useEthBalance = () => {
     () => new ethers.providers.Web3Provider(window.ethereum),
     []
   )
-  const signer = provider.getSigner()
 
   const fetchBalance = useCallback(async () => {
-    const address = await signer.getAddress()
     const rawBalance = await provider.getBalance(address)
     const value = ethers.utils.formatEther(rawBalance)
 
     if (prevBalance !== value) {
       dispatch(setEth(value))
     }
-  }, [dispatch, prevBalance, provider, signer])
+  }, [address, dispatch, prevBalance, provider])
 
   useEffect(() => {
     fetchBalance()
