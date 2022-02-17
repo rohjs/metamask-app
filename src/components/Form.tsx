@@ -19,10 +19,10 @@ const INITIAL_ERROR: FormError = {
   amount: false,
 }
 
-export const Form: FC<FormProps> = ({ address }) => {
+export const Form: FC<FormProps> = () => {
   const [error, setError] = useState<FormError>(INITIAL_ERROR)
 
-  const { isGoerli } = useNetwork()
+  const { address, isGoerli } = useNetwork()
   const { transferEth, transferHbd } = useTransfer(address)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

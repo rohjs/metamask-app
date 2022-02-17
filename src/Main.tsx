@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ethers } from 'ethers'
-import store from 'store'
 import './App.css'
+
+import { useNetwork } from './hooks'
 
 import { CurrentNetwork } from './components/CurrentNetwork'
 import { Effects } from './components/Effects'
@@ -11,17 +12,13 @@ import { UserMenu } from './components/UserMenu'
 import { Wallets } from './components/Wallets'
 
 function Main() {
-  const [address, setAddress] = useState(store.get(`meta.account`) || '')
   const navigate = useNavigate()
+  const { address, updateAddress } = useNetwork()
 
-  const updateAddress = (newAcccount: string) => {
-    if (!newAcccount) return
-    setAddress(newAcccount)
-    store.set(`meta.account`, newAcccount)
-  }
+  const { ethereum } = window
 
   const connect = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')
+    const provider = new ethers.providers.Web3Provider(ethereum, 'any')
     const accounts = await provider.send('eth_requestAccounts', [])
     if (accounts && accounts[0]) {
       updateAddress(accounts[0])
@@ -29,8 +26,8 @@ function Main() {
   }
 
   useEffect(() => {
-    if (!window.ethereum) return navigate('/guide')
-  }, [navigate])
+    if (!ethereum) return navigate('/guide')
+  }, [ethereum, navigate])
 
   return (
     <div className="app">
@@ -56,7 +53,8 @@ function Main() {
           </>
         )}
       </div>
-      {window.ethereum && address && (
+
+      {ethereum && address && (
         <Effects address={address} updateAddress={updateAddress} />
       )}
     </div>
