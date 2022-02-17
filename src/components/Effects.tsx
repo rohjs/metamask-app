@@ -4,14 +4,9 @@ import store from 'store'
 
 import { useEthBalance, useHbdBalance, useNetwork } from '../hooks'
 
-type EffectsProps = {
-  address: string
-  updateAddress: (newAcccount: string) => void
-}
-
-export const Effects: FC<EffectsProps> = ({ address, updateAddress }) => {
+export const Effects: FC = () => {
   const { ethereum } = window
-  const { updateChainId } = useNetwork()
+  const { address, updateAddress, updateChainId } = useNetwork()
 
   useEthBalance(address)
   useHbdBalance(address)
@@ -35,11 +30,13 @@ export const Effects: FC<EffectsProps> = ({ address, updateAddress }) => {
   const handleAccountsChanged = useCallback(
     (newAccounts: string[]) => {
       const newAccount = newAccounts[0]
-      if (newAccount) updateAddress(newAccount)
-      else {
-        store.remove('meta.account')
-        window.location.reload()
+      if (newAccount) {
+        updateAddress(newAccount)
+        return
       }
+
+      store.remove('meta.account')
+      window.location.reload()
     },
     [updateAddress]
   )

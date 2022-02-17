@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ethers } from 'ethers'
 import './App.css'
 
 import { useNetwork } from './hooks'
 
+import { Connect } from './components/Connect'
 import { CurrentNetwork } from './components/CurrentNetwork'
 import { Effects } from './components/Effects'
 import { Form } from './components/Form'
@@ -13,17 +13,9 @@ import { Wallets } from './components/Wallets'
 
 function Main() {
   const navigate = useNavigate()
-  const { address, updateAddress } = useNetwork()
+  const { address } = useNetwork()
 
   const { ethereum } = window
-
-  const connect = async () => {
-    const provider = new ethers.providers.Web3Provider(ethereum, 'any')
-    const accounts = await provider.send('eth_requestAccounts', [])
-    if (accounts && accounts[0]) {
-      updateAddress(accounts[0])
-    }
-  }
 
   useEffect(() => {
     if (!ethereum) return navigate('/guide')
@@ -47,16 +39,12 @@ function Main() {
         ) : (
           <>
             <h1>Welcome!</h1>
-            <button onClick={connect} disabled={!!address} type="button">
-              Connect a Wallet 🦊
-            </button>
+            <Connect />
           </>
         )}
       </div>
 
-      {ethereum && address && (
-        <Effects address={address} updateAddress={updateAddress} />
-      )}
+      {ethereum && address && <Effects />}
     </div>
   )
 }
